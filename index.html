@@ -305,6 +305,46 @@
   .prize-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mint-ink); display: block; margin-bottom: 10px; }
   .prize-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
   .prize-card p { color: var(--grey); font-size: 0.9rem; }
+  .prize-cta { display: inline-block; margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); border-bottom: 2px solid var(--mint); padding-bottom: 2px; text-decoration: none; }
+  .prize-cta:hover { border-bottom-color: var(--ink); }
+  /* TICKETS BAND. Sticky immediately under the nav, and styled as an extension of it:
+     same ink, same border, same Space Grotesk 700, same mint accent, same button as .nav-cta.
+     No will-change here on purpose. Promoting the track to its own compositor layer made the
+     animated text resample at fractional offsets, which is what made it look soft next to
+     the crisp nav above it. */
+  .tickets-band {
+    position: sticky; top: 50px; z-index: 45;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--ink); color: #fff; border-bottom: 1px solid #262626;
+    height: 42px; overflow: hidden; text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .tickets-band:hover, .tickets-band:focus-visible { background: #1e1e1e; }
+  .tickets-marquee { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .tickets-track { display: inline-flex; white-space: nowrap; animation: ticketsScroll 20s linear infinite; }
+  .tickets-run { display: inline-flex; align-items: center; }
+  .tickets-item {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.01em; color: #fff; padding: 0 14px;
+  }
+  .tickets-item-key { color: var(--mint); }
+  /* The only clickability cue now that the button is gone, so it stays underlined. */
+  .tickets-item-cta { color: var(--mint); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .tickets-dot { color: #3d3d3d; font-size: 0.7rem; }
+  /* Shift distance is exactly one run's width in px, measured and set by buildTicketsMarquee().
+     A fixed -50% only loops seamlessly if one run happens to be wider than the viewport, which
+     it is not on a large desktop screen. That mismatch is what made the loop visibly restart. */
+  @keyframes ticketsScroll { from { transform: translateX(0); } to { transform: translateX(calc(var(--tickets-shift, 50%) * -1)); } }
+  /* WCAG 2.2.2: moving content must be stoppable. Pauses on hover and on keyboard focus. */
+  .tickets-band:hover .tickets-track, .tickets-band:focus-visible .tickets-track { animation-play-state: paused; }
+  @media (max-width: 560px) {
+    .tickets-band { height: 38px; }
+    .tickets-item { font-size: 0.78rem; padding: 0 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tickets-track { animation: none; }
+    .tickets-run:not(:first-child) { display: none; }
+  }
 
   /* essentials: cards on desktop, divided list on mobile */
   .ess-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
@@ -453,6 +493,19 @@
   </div>
 </nav>
 
+<!-- TICKETS BAND. Sits immediately under the nav in document order and sticks there.
+     Must be a direct child of body, NOT inside <main>, or the stick would end where main ends.
+     Typography deliberately mirrors .nav-title and .nav-cta so it reads as an extension
+     of the nav rather than a separate widget. Hidden by default; applyPhase() reveals it
+     only when PHASE is 'pre' AND TICKETS_OPEN. The whole band is the link. -->
+<a class="tickets-band hidden" id="ticketsBand" data-tickets aria-label="Tickets are open for The Big Jumpstart 5K, Wednesday 12 August, Battersea Park. Book tickets." href="https://www.letsdothis.com/gb/o/178377/checkout/ticket?eventId=250579&amp;occurrenceId=21111175579" target="_blank" rel="noopener">
+  <span class="tickets-marquee">
+    <span class="tickets-track">
+      <span class="tickets-run"><span class="tickets-item tickets-item-key">Tickets are open</span><span class="tickets-dot">&bull;</span><span class="tickets-item">Wed 12 August, Battersea Park</span><span class="tickets-dot">&bull;</span><span class="tickets-item tickets-item-cta">Click here for tickets</span><span class="tickets-dot">&bull;</span></span>
+    </span>
+  </span>
+</a>
+
 <!-- HERO (compact) -->
 <header class="hero" id="top">
   <div class="wrap">
@@ -491,12 +544,12 @@
   <div class="status-inner" id="statusInner"></div>
 </div>
 
-<!-- SPONSOR BANNER. Attio uses their supplied SVG. Novabook is still an interim text wordmark, no asset received. -->
+<!-- SPONSOR BANNER. Both logos are supplier-provided SVGs, both link out. -->
 <div class="attio-banner">
   <span class="attio-banner-label">Powered by</span>
   <a class="sponsor-link" href="https://attio.com/?utm_source=jumpstart&amp;utm_medium=event_sponsorship&amp;utm_campaign=jumpstart-Y26" target="_blank" rel="noopener"><img class="sponsor-logo sponsor-attio-logo" src="images/attio-logo.svg" width="227" height="56" alt="Attio"></a>
   <span class="sponsor-strip-sep">&amp;</span>
-  <a class="sponsor-link sponsor-wordmark sponsor-nova" href="https://novabook.com/" target="_blank" rel="noopener">Novabook</a>
+  <a class="sponsor-link" href="https://novabook.com/" target="_blank" rel="noopener"><img class="sponsor-logo sponsor-nova-logo" src="images/novabook-logo.svg" width="1096" height="200" alt="Novabook"></a>
 </div>
 
 <main>
@@ -621,6 +674,7 @@
           <span class="tag mono">Prize 01</span>
           <h3>Most Runners</h3>
           <p>Grab tickets for the whole company, rope in the investors, drag along the interns. The startup with the most runners on the day wins.</p>
+          <a class="prize-cta hidden" data-tickets href="https://www.letsdothis.com/gb/o/178377/checkout/ticket?eventId=250579&amp;occurrenceId=21111175579" target="_blank" rel="noopener">Get tickets</a>
         </div>
         <div class="prize-card">
           <span class="tag mono">Prize 02</span>
@@ -896,6 +950,10 @@ const EVENT = {
   resultsAt:    '2026-08-12T20:30:00',   // site flips to POST mode (results visible)
 };
 
+// Tickets band. Set to false the moment ticket sales close and the band disappears
+// everywhere it appears. It also hides itself automatically once the race day starts.
+const TICKETS_OPEN = true;
+
 // Post-race results. Fill in on the night, set published: true, re-upload.
 const resultsData = {
   published: false,
@@ -1096,9 +1154,65 @@ function getPhase() {
 }
 const PHASE = getPhase();
 
+// Fills the tickets marquee with as many copies of the text as the current viewport needs,
+// then tells the animation to shift by exactly one copy's width. Without this the loop restarts
+// while there is still empty bar to the right, which looks like text appearing from nowhere.
+// Safe to build in JS: the band is hidden unless applyPhase() has already run.
+function buildTicketsMarquee() {
+  const band = document.getElementById('ticketsBand');
+  if (!band) return;
+  const track = band.querySelector('.tickets-track');
+  const runs = track ? track.querySelectorAll('.tickets-run') : null;
+  if (!track || !runs || !runs.length) return;
+
+  for (let i = runs.length - 1; i > 0; i--) runs[i].remove();   // reset before measuring
+  const first = track.querySelector('.tickets-run');
+
+  // Guarded: if matchMedia is missing this must not throw, or it takes applyPhase() down with it.
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    track.style.animation = 'none';
+    return;
+  }
+
+  const runWidth = first.getBoundingClientRect().width;
+  if (!runWidth) return;
+  const copies = Math.ceil((band.getBoundingClientRect().width + runWidth) / runWidth) + 1;
+  for (let i = 1; i < copies; i++) {
+    const clone = first.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+  }
+  track.style.setProperty('--tickets-shift', runWidth + 'px');
+  track.style.animationDuration = (runWidth / 55) + 's';   // constant 55px per second at any width
+}
+
+let _ticketsResizeTimer;
+window.addEventListener('resize', function () {
+  clearTimeout(_ticketsResizeTimer);
+  _ticketsResizeTimer = setTimeout(function () {
+    const band = document.getElementById('ticketsBand');
+    if (band && !band.classList.contains('hidden')) buildTicketsMarquee();
+  }, 180);
+});
+// Web fonts change the measured width, so remeasure once they have loaded.
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function () {
+    const band = document.getElementById('ticketsBand');
+    if (band && !band.classList.contains('hidden')) buildTicketsMarquee();
+  });
+}
+
 function applyPhase() {
   const status = document.getElementById('statusInner');
   const hero2 = document.getElementById('heroSecondary');
+
+  // Tickets band and the Most Runners ticket link. Pre-phase only, and only while open.
+  const showTickets = (PHASE === 'pre') && TICKETS_OPEN;
+  document.querySelectorAll('[data-tickets]').forEach(function (el) {
+    el.classList.toggle('hidden', !showTickets);
+  });
+  if (showTickets) buildTicketsMarquee();
 
   if (PHASE === 'pre') {
     status.innerHTML = '<span class="flash-urgent"><strong>Every runner must complete their individual ticket details.</strong> <a href="https://www.letsdothis.com/manage-booking" target="_blank" rel="noopener">Add them here</a>.</span>';
