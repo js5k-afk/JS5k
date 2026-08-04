@@ -954,6 +954,15 @@ const EVENT = {
 // everywhere it appears. It also hides itself automatically once the race day starts.
 const TICKETS_OPEN = true;
 
+// Analytics. Umami Cloud: privacy-first, cookieless, no consent banner needed.
+// Paste the website ID from your Umami dashboard below. Leave websiteId as ''
+// to switch analytics off entirely: if it is blank, no script loads and nothing
+// is tracked, matching the site's "fail to nothing" rule.
+const ANALYTICS = {
+  websiteId: 'df6a1e41-022a-45d8-a663-d97a0ee973aa',
+  scriptUrl: 'https://cloud.umami.is/script.js',
+};
+
 // Post-race results. Fill in on the night, set published: true, re-upload.
 const resultsData = {
   published: false,
@@ -1399,6 +1408,7 @@ updateCountdown();
         const dest = document.querySelector(target);
         if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
+        if (window.__track) window.__track('outbound_jumpstart', { location: 'swipe_deck', href: target });
         window.open(target, '_blank', 'noopener');
       }
     }
@@ -1547,6 +1557,42 @@ document.getElementById('quoteGrid').innerHTML = hiringQuotes.map(q =>
   `<div class="quote"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>"${q.text}"</p><div class="who mono">${q.who}</div></div>`).join('');
 
 applyPhase();
+
+/* ---------- Analytics (Umami: privacy-first, cookieless) ----------
+   Loads the beacon async so it never blocks the wave times or map on 4G.
+   Tracks: pageviews (automatic), outbound Jumpstart CTA clicks, ticket
+   purchase clicks. Every hook is wrapped so a blocked or slow beacon can
+   never interfere with a link or navigation. */
+function initAnalytics() {
+  if (!ANALYTICS.websiteId) return;  // disabled: nothing loads, nothing tracked
+
+  const s = document.createElement('script');
+  s.defer = true;
+  s.src = ANALYTICS.scriptUrl;
+  s.setAttribute('data-website-id', ANALYTICS.websiteId);
+  document.head.appendChild(s);
+
+  // Safe wrapper: silent no-op if the beacon is absent, blocked or errors.
+  window.__track = function (event, data) {
+    try { if (window.umami) window.umami.track(event, data); } catch (e) {}
+  };
+
+  // Delegated click tracking, capture phase, so it catches every anchor-based
+  // CTA including ones injected later (end card, status strip). The deck's
+  // window.open path is tracked separately since it is not an anchor click.
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    const label = (a.getAttribute('aria-label') || a.textContent || '').trim().slice(0, 60);
+    if (href.indexOf('jumpstart-uk.com') !== -1) {
+      window.__track('outbound_jumpstart', { location: label || 'link', href: href });
+    } else if (href.indexOf('/checkout/ticket') !== -1) {
+      window.__track('ticket_click', { location: label || 'link', href: href });
+    }
+  }, true);
+}
+initAnalytics();
 </script>
 
 </body>
