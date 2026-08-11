@@ -426,8 +426,6 @@
   .quote p { font-size: 0.9rem; color: #d4d9d6; flex: 1; }
   .quote .who { margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #7d857f; letter-spacing: 0.06em; }
   .js-ctas { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
-  .js-perk { margin-top: 24px; border: 1px dashed #3a3f3c; padding: 14px 18px; font-size: 0.9rem; color: #c4cac6; }
-  .js-perk strong { color: var(--mint); }
   .trust { margin-top: 34px; padding-top: 22px; border-top: 1px solid #2b2b2b; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; color: #6f7671; text-transform: uppercase; line-height: 2; }
   .trust span { color: #a7aeaa; }
 
@@ -443,13 +441,6 @@
   .footer-links a:hover { color: var(--mint); }
   .footer-fine { margin-top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: #5c625e; letter-spacing: 0.06em; }
 
-  /* ---------- £500 PERK BAND ---------- */
-  .perk-band { background: var(--mint); color: var(--ink); margin-top: 48px; }
-  .perk-inner { max-width: var(--max); margin: 0 auto; padding: 36px 20px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
-  .perk-inner .big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.7rem, 5vw, 2.6rem); line-height: 1.05; letter-spacing: -0.02em; flex: 1 1 300px; }
-  .perk-inner .how { flex: 1 1 260px; }
-  .perk-inner .how p { font-size: 0.95rem; font-weight: 500; }
-  .perk-inner .how .steps { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 10px; opacity: 0.75; }
   .btn-ink { background: var(--ink); color: #fff; }
   .btn-ink:hover { background: #000; color: var(--mint); }
 
@@ -783,7 +774,7 @@
       <!-- Finisher card generator -->
       <div class="finisher">
         <h3>Claim your finisher card</h3>
-        <p>You ran it, now post it. Generate your card and share it on LinkedIn. Tag Jumpstart when you post and your company gets <strong style="color:var(--mint)">£500 off its next Jumpstart hire</strong>.</p>
+        <p>You ran it, now post it. Generate your card and share it on LinkedIn.</p>
         <div class="fin-form">
           <input type="text" id="finName" placeholder="Your name" maxlength="30" aria-label="Your name">
           <input type="text" id="finTime" placeholder="Time e.g. 24:31" maxlength="8" aria-label="Your finish time">
@@ -799,17 +790,6 @@
   </div>
 
   <!-- JUMPSTART BAND: the closer -->
-  <!-- £500 PERK -->
-  <div class="perk-band" id="perk">
-    <div class="perk-inner reveal">
-      <div class="big">£500 off your next hire.<br>For one LinkedIn post.</div>
-      <div class="how">
-        <p>Post about the 5K on 12 August, tag Jumpstart, and your company gets £500 off its next Jumpstart hire.</p>
-        <div class="steps">01 RUN &nbsp;→&nbsp; 02 POST &amp; TAG US &nbsp;→&nbsp; 03 SAVE £500</div>
-        <p style="margin-top:16px;"><a class="btn btn-ink" href="https://www.linkedin.com/company/jumpstartprogramme/" target="_blank" rel="noopener">Tag @Jumpstart on LinkedIn</a></p>
-      </div>
-    </div>
-  </div>
 
   <div class="js-band" id="jumpstart">
     <div class="wrap reveal">
@@ -832,9 +812,6 @@
         <a class="btn btn-mint" href="https://jumpstart-uk.com/for-startups/?utm_source=js5k_race_day_website" target="_blank" rel="noopener">Start hiring with Jumpstart</a>
       </div>
 
-      <div class="js-perk">
-        Don't forget the race-day perk: <a href="#perk" style="color:var(--mint)"><strong>£500 off your next hire</strong></a> for one LinkedIn post.
-      </div>
 
       <div class="trust mono">
         Trusted by startups, backed by leading VCs.
@@ -1041,12 +1018,14 @@ const teamData = [
   { name: 'Delfa', wave: 2 },
   { name: 'Deliveroo Run Club', wave: 1 },
   { name: 'E.ON Next', wave: 4 },
+  { name: 'EF', wave: 4 },
   { name: 'Elyos AI', wave: 1 },
   { name: 'enki', wave: 1 },
   { name: 'Evident InStrides', wave: 1 },
   { name: 'Faved', wave: 1 },
   { name: 'Felix Research', wave: 4 },
   { name: 'Fertifa', wave: 1 },
+  { name: 'Ffern', wave: 3 },
   { name: 'Fifteen Percent', wave: 4 },
   { name: 'Finance Power', wave: 2 },
   { name: 'Finster AI', wave: 2 },
@@ -1054,11 +1033,13 @@ const teamData = [
   { name: 'Fleek', wave: 3 },
   { name: 'Founders Factory', wave: 2 },
   { name: 'Founders Forum Group', wave: 2 },
+  { name: 'FreightSuite', wave: 2 },
   { name: 'Fun runners', wave: 2 },
   { name: 'Gaia', wave: 2 },
   { name: 'Gen H', wave: 2 },
   { name: 'Goats R Us', wave: 2 },
   { name: 'GreenJinn', wave: 2 },
+  { name: 'GT Gazelles', wave: 2 },
   { name: 'Haku AI', wave: 3 },
   { name: 'Hansel & Gretel', wave: 1 },
   { name: 'Healf', wave: 2 },
@@ -1087,7 +1068,9 @@ const teamData = [
   { name: 'LEVRA', wave: 2 },
   { name: 'LightHearted AI', wave: 3 },
   { name: 'Living Room Labs', wave: 2 },
+  { name: 'LockedIn', wave: 3 },
   { name: 'Lodo', wave: 2 },
+  { name: 'Logos Capital Impact', wave: 2 },
   { name: 'Lottie', wave: 2 },
   { name: 'Lough', wave: 4 },
   { name: 'Love Ventures', wave: 4 },
@@ -1131,12 +1114,14 @@ const teamData = [
   { name: 'QuickSilver Systems', wave: 2 },
   { name: 'RaceAgainstEveryone', wave: 3 },
   { name: 'Raindrop Run Club', wave: 3 },
+  { name: 'Reasonably Practicable Run Club', wave: 3 },
   { name: 'Rentmigo', wave: 4 },
   { name: 'Round', wave: 3 },
   { name: 'ROXFIT', wave: 3 },
   { name: 'Seabound', wave: 3 },
   { name: 'Seneca', wave: 3 },
-  { name: 'Snomad', wave: 4 },
+  { name: 'Sifted', wave: 2 },
+  { name: 'Snomad', wave: 2 },
   { name: 'Solution Squad', wave: 3 },
   { name: 'Sona', wave: 3 },
   { name: 'SourceWhale', wave: 4 },
@@ -1152,8 +1137,8 @@ const teamData = [
   { name: 'Tate Creative Studio', wave: 3 },
   { name: 'Team', wave: 4 },
   { name: 'Team Buddy', wave: 3 },
-  { name: 'Team Cauli', wave: 3 },
-  { name: 'Team Cazoo', wave: 4 },
+  { name: 'Team Cauli', wave: 2 },
+  { name: 'Team Cazoo', wave: 2 },
   { name: 'Team Dragonfly', wave: 4 },
   { name: 'Team Heat Geek', wave: 4 },
   { name: 'Team iFocus', wave: 4 },
@@ -1184,7 +1169,8 @@ const teamData = [
   { name: 'VEF', wave: 4 },
   { name: 'Vega', wave: 4 },
   { name: 'Velocity', wave: 4 },
-  { name: 'Vertice', wave: 4 },
+  { name: 'Vertice', wave: 2 },
+  { name: 'Vibra Sports', wave: 4 },
   { name: 'Visibly', wave: 3 },
   { name: 'Vita Mojo', wave: 3 },
   { name: 'VoltView', wave: 4 },
@@ -1212,7 +1198,6 @@ const deckCards = [
   { k: 'SWIPE 01', h: 'This race started as a COMPLETE joke.', p: '"Wouldn\'t it be fun if we did the startup equivalent of the J.P. Morgan 5K?" Three years later, you\'re standing in it.', cta: 'Keep swiping', url: '#deck' },
   { k: 'SWIPE 02', h: '1,000 → 1,200 → 2,000 runners.', p: 'Every single runner works at, founded, or funds a startup. Complete madness.', cta: 'The largest startup 5K in the world', url: 'https://jumpstart-uk.com/for-startups/?utm_source=js5k_race_day_website' },
   { k: 'SWIPE 03', h: 'We make startup hiring feel unfairly easy.', p: '1,500+ UK startups hire through Jumpstart: vetted, startup-ready candidates who apply once and hear back fast.', cta: 'Hire via Jumpstart', url: 'https://jumpstart-uk.com/for-startups/?utm_source=js5k_race_day_website' },
-  { k: 'SWIPE 04', h: 'Run on 12 August. Save £500 on your next hire.', p: 'Post about the 5K and tag Jumpstart on LinkedIn for £500 off your next Jumpstart hire. That\'s it, that\'s the deal.', cta: 'Show me the perk', url: '#perk' },
 ];
 
 /* ========================= END OF CONFIG ================================ */
